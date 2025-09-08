@@ -2,7 +2,8 @@
 
 Unity Catalog is Databricks’ unified data governance and metadata management solution.
 It allows you to centrally manage, secure, and track all your data and AI assets—including tables, views, machine learning models, and notebooks—across multiple Databricks workspaces.
-(single source of truth for data governance with fine-grained access control and auditability)
+
+### (single source of truth for data governance with fine-grained access control and auditability)
 
 ## Why Do We Need Unity Catalog?
 
@@ -28,6 +29,6 @@ Before Unity Catalog, Databricks had limitations in managing and securing data e
 
 - Audit Logging: Track who accessed or modified data.
 
-Data Lineage: See how data flows, transformations, and usage.
+- Data Lineage: See how data flows, transformations, and usage.
 
-Model Governance: Manage machine learning models like data.
+- Model Governance: Manage machine learning models like data.
