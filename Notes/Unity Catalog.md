@@ -38,7 +38,7 @@ Before Unity Catalog, Databricks had limitations in managing and securing data e
 
 | Problem Before                                                  | How Unity Catalog Solves It                                         |
 | --------------------------------------------------------------- | ------------------------------------------------------------------- |
-| Multiple metastores across workspaces → inconsistent governance | Centralized metastore for all workspaces                            |
+| Multiple metastores across workspaces → inconsistent governance | Centralized metastore for all workspaces , just need to attach it to that metastore                          |
 | Only workspace-level access control                             | Fine-grained access control at table, row, column, and schema level |
 | Hard to track who accessed/modified data                        | Full audit logging and lineage tracking                             |
 | Difficulty with external tables                                 | Simplified management of external tables with proper access control |
