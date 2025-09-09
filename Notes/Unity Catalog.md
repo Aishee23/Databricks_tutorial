@@ -46,3 +46,49 @@ Before Unity Catalog, Databricks had limitations in managing and securing data e
 
 
 In short: Unity Catalog unifies data governance, making it secure, auditable, and easier to manage at scale.
+
+### Important Points to remember
+- We need can create one unity metastore in a particular region
+- If we have one Databricks workspace attached to the unoity metastore then another databricks can access all the catalog.
+
+
+### Unity Catalog Object Hierarchy
+Unity Catalog organizes data objects in a 3-level namespace:
+
+    <catalog>.<schema>.<table/view>
+
+#### a. Metastore
+
+The top-level container for all Unity Catalog objects.
+Each region of a cloud account has one metastore.
+A metastore can be attached to multiple Databricks workspaces.
+
+#### b. Catalog
+
+A container of schemas.
+Example: retail_catalog, finance_catalog.
+
+Useful for organizing data by business domain.
+It provides logical grouping + centralized security + cross-workspace governance.
+
+#### c. Schema (Database)
+
+A container of tables and views inside a catalog.
+Example: retail_catalog.sales, finance_catalog.reports.
+
+#### d. Tables & Views
+
+Tables: Store structured data (managed or external).
+Views: Logical representation of data.
+
+Types of Tables:
+- Managed Table: Unity Catalog manages storage.
+- External Table: Points to data in external storage (e.g., S3, ADLS).
+- Delta Table: Optimized format for transactions.
+
+#### e. Other Objects
+
+- Functions (UDFs) → User-defined functions stored at schema level.
+- Files & Volumes → For unstructured/semi-structured data.
+- Models → ML models can be registered and governed in Unity Catalog.
+
