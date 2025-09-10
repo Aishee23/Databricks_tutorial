@@ -77,6 +77,11 @@ Schema (also known as databases) contain tables, views, volumes, AI models, and 
 
 ##### Tables:- 
 are collections of data organized by rows and columns. Tables can be either managed, with Unity Catalog managing the full lifecycle of the table, or external, with Unity Catalog managing access to the data from within Azure Databricks, but not managing access to the data in cloud storage from other clients. See Azure Databricks tables and Managed versus external tables and volumes.
+
+In short:
+- Managed = Unity Catalog fully owns storage + metadata.
+- External = Unity Catalog only owns metadata, data stays outside.
+
 ##### View:- 
 are saved queries against one or more tables. See What is a view?.
 ##### Volumes:-
@@ -85,39 +90,22 @@ represent logical volumes of data in cloud object storage. You can use volumes t
 are units of saved logic that return a scalar value or set of rows. See User-defined functions (UDFs) in Unity Catalog.
 ##### Models:- 
 are AI models packaged with MLflow and registered in Unity Catalog as functions. See Manage model lifecycle in Unity Catalog.
-#### b. Catalog
-
-- ##### Catalog:-
-   A container of schemas.
-   Catalogs are used to organize your data assets and are typically used as the top level in your data isolation scheme
-Example: retail_catalog, finance_catalog.
-Useful for organizing data by business domain.
-It provides logical grouping + centralized security + cross-workspace governance.
-
-- ##### Non-data securable object:-
-  such as storage credentials and external locations, are used to manage your data governance model in Unity Catalog. These also live directly under the metastore.
-
-#### c. Schema (Database)
-
-A container of tables and views inside a catalog.
-Example: retail_catalog.sales, finance_catalog.reports.
-
-#### d. Tables & Views
-
-Tables: Store structured data (managed or external).
-Views: Logical representation of data.
-
-Types of Tables:
-- Managed Table: Unity Catalog manages storage.
-- External Table: Points to data in external storage (e.g., S3, ADLS).
-- Delta Table: Optimized format for transactions.
-
-#### e. Other Objects
-
-- Functions (UDFs) → User-defined functions stored at schema level.
-- Files & Volumes → For unstructured/semi-structured data.
-- Models → ML models can be registered and governed in Unity Catalog.
 
 
+### To create a metastore:
+     Manage account in databricks--> Catalog--> Create metastore
+#### - Always provide storage location to unity metastore its a good practice
 
+### Access Connector:
+With an Access Connector:
+- Secure, role-based authentication (no secrets in code).
+- Centralized least-privilege access control.
+- Auditability (you can see which Databricks workspace identity accessed storage).
 
+How It Works (Azure Example)
+- You create an Access Connector in Azure (via Portal, CLI, or Terraform).
+- This Access Connector is backed by a Managed Identity.
+- You give that identity RBAC permissions (e.g., Storage Blob Data Contributor) on your storage account.
+- In Unity Catalog, when you create an External Location (external table pointing to ADLS), you attach it to the Access Connector.
+- Databricks uses the Access Connector’s identity to securely read/write data
+  
