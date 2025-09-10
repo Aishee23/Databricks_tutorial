@@ -62,14 +62,40 @@ Unity Catalog organizes data objects in a 3-level namespace:
 The top-level container for all Unity Catalog objects.
 Each region of a cloud account has one metastore.
 A metastore can be attached to multiple Databricks workspaces.
+#### Level one:
 
+##### Catalogs:-
+Catalogs are used to organize your data assets and are typically used as the top level in your data isolation scheme. Catalogs often mirror organizational units or software development lifecycle scopes. 
+Non-data securable objects, such as storage credentials and external locations, are used to manage your data governance model in Unity Catalog. These also live directly under the metastore. They are described in more detail in Securable objects that Unity Catalog uses to manage access to external data sources.
+
+#### Level two:
+
+##### Schemas:- 
+Schema (also known as databases) contain tables, views, volumes, AI models, and functions. Schemas organize data and AI assets into logical categories that are more granular than catalogs. Typically a schema represents a single use case, project, or team sandbox. See What are schemas in Azure Databricks?.
+
+#### Level three:
+
+##### Tables:- 
+are collections of data organized by rows and columns. Tables can be either managed, with Unity Catalog managing the full lifecycle of the table, or external, with Unity Catalog managing access to the data from within Azure Databricks, but not managing access to the data in cloud storage from other clients. See Azure Databricks tables and Managed versus external tables and volumes.
+##### View:- 
+are saved queries against one or more tables. See What is a view?.
+##### Volumes:-
+represent logical volumes of data in cloud object storage. You can use volumes to store, organize, and access files in any format, including structured, semi-structured, and unstructured data. Typically they are used for non-tabular data. Volumes can be either managed, with Unity Catalog managing the full lifecycle and layout of the data in storage, or external, with Unity Catalog managing access to the data from within Azure Databricks, but not managing access to the data in cloud storage from other clients. See What are Unity Catalog volumes? and Managed versus external tables and volumes.
+##### Functions:- 
+are units of saved logic that return a scalar value or set of rows. See User-defined functions (UDFs) in Unity Catalog.
+##### Models:- 
+are AI models packaged with MLflow and registered in Unity Catalog as functions. See Manage model lifecycle in Unity Catalog.
 #### b. Catalog
 
-A container of schemas.
+- ##### Catalog:-
+   A container of schemas.
+   Catalogs are used to organize your data assets and are typically used as the top level in your data isolation scheme
 Example: retail_catalog, finance_catalog.
-
 Useful for organizing data by business domain.
 It provides logical grouping + centralized security + cross-workspace governance.
+
+- ##### Non-data securable object:-
+  such as storage credentials and external locations, are used to manage your data governance model in Unity Catalog. These also live directly under the metastore.
 
 #### c. Schema (Database)
 
@@ -91,4 +117,7 @@ Types of Tables:
 - Functions (UDFs) → User-defined functions stored at schema level.
 - Files & Volumes → For unstructured/semi-structured data.
 - Models → ML models can be registered and governed in Unity Catalog.
+
+
+
 
