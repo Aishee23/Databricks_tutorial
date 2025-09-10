@@ -58,8 +58,8 @@ Unity Catalog organizes data objects in a 3-level namespace:
     <catalog>.<schema>.<table/view>
 
 
-    Metastore
-   └── Catalog
+Metastore
+   └──Catalog
         └── Schema
              └── Table/View/Function/Volume/Model
 
