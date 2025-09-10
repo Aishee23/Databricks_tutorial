@@ -57,24 +57,26 @@ Unity Catalog organizes data objects in a 3-level namespace:
 
     <catalog>.<schema>.<table/view>
 
-#### a. Metastore
 
+    Metastore
+   └── Catalog
+        └── Schema
+             └── Table/View/Function/Volume/Model
+
+#### a. Metastore
 The top-level container for all Unity Catalog objects.
 Each region of a cloud account has one metastore.
 A metastore can be attached to multiple Databricks workspaces.
 #### Level one:
-
 ##### Catalogs:-
 Catalogs are used to organize your data assets and are typically used as the top level in your data isolation scheme. Catalogs often mirror organizational units or software development lifecycle scopes. 
 Non-data securable objects, such as storage credentials and external locations, are used to manage your data governance model in Unity Catalog. These also live directly under the metastore. They are described in more detail in Securable objects that Unity Catalog uses to manage access to external data sources.
 
 #### Level two:
-
 ##### Schemas:- 
 Schema (also known as databases) contain tables, views, volumes, AI models, and functions. Schemas organize data and AI assets into logical categories that are more granular than catalogs. Typically a schema represents a single use case, project, or team sandbox. See What are schemas in Azure Databricks?.
 
 #### Level three:
-
 ##### Tables:- 
 are collections of data organized by rows and columns. Tables can be either managed, with Unity Catalog managing the full lifecycle of the table, or external, with Unity Catalog managing access to the data from within Azure Databricks, but not managing access to the data in cloud storage from other clients. See Azure Databricks tables and Managed versus external tables and volumes.
 
