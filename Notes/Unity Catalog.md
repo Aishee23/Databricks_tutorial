@@ -134,4 +134,18 @@ They are part of Unity Catalog’s data governance model and allow you to secure
 | **External** (no location) | **External** (has location)                  | **Managed** (no location)   | `<schema_location>/<table>/`           | Managed    |  UC                              |
 | **External** (no location) | **External** (has location)                  | **External** (has location) | `<table_location>`                     | External   |  User (UC deletes only metadata) |
 
-  
+*We can DROP and UNDROP data from Managed table*
+
+**What is a View**
+A view is a saved SQL query that behaves like a table when you query it.
+It does not store data, only stores the SQL logic and fetches fresh results each time you query it.
+It is a logical object inside a schema, just like a table or function.
+
+        CREATE VIEW retail.sales.high_value_orders AS
+        SELECT * FROM retail.sales.orders
+        WHERE amount > 1000;
+
+
+        Temporary view:
+        CREATE VIEW retail.sales.high_value_orders AS SELECT * FROM retail.sales.orders WHERE amount > 1000;
+                
