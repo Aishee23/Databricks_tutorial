@@ -57,12 +57,6 @@ Unity Catalog organizes data objects in a 3-level namespace:
 
     <catalog>.<schema>.<table/view>
 
-
-Metastore
-   └──Catalog
-        └── Schema
-             └── Table/View/Function/Volume/Model
-
 #### a. Metastore
 The top-level container for all Unity Catalog objects.
 Each region of a cloud account has one metastore.
@@ -110,4 +104,34 @@ How It Works (Azure Example)
 - You give that identity RBAC permissions (e.g., Storage Blob Data Contributor) on your storage account.
 - In Unity Catalog, when you create an External Location (external table pointing to ADLS), you attach it to the Access Connector.
 - Databricks uses the Access Connector’s identity to securely read/write data
+  
+#### What Are Databricks Storage Credentials?
+
+Storage credentials in Unity Catalog are named objects that securely store authentication information (like keys or identities) so Databricks can access external cloud storage on your behalf (e.g. S3, ADLS Gen2, GCS).
+
+They are part of Unity Catalog’s data governance model and allow you to securely connect external data sources without embedding keys in code.
+
+- Create a Microsoft Entra ID Managed Identity via an Access Connector
+    
+- Assign Storage Blob Data Contributor role on your ADLS Gen2 storage account to that identity
+    
+    In Databricks:
+    
+            CREATE STORAGE CREDENTIAL my_adls_cred
+            WITH AZURE_MANAGED_IDENTITY = '<client-id-of-access-connector>'
+ - Create an external location using that credential:
+    
+            CREATE EXTERNAL LOCATION my_ext_loc
+            URL 'abfss://container@storageaccount.dfs.core.windows.net/'
+            WITH STORAGE CREDENTIAL my_adls_cred;
+- Now you can create external tables from that location.
+
+#### Unity Catalog Storage Resolution Matrix
+| Catalog                    | Schema                                       | Table                       | Where Data Is Stored                   | Table Type | Who Deletes Data on DROP          |
+| -------------------------- | -------------------------------------------- | --------------------------- | -------------------------------------- | ---------- | --------------------------------- |
+| **Managed** (has location) | **Managed** (no location → inherits catalog) | **Managed** (no location)   | `<catalog_location>/<schema>/<table>/` | Managed    | ✅ UC                              |
+| **Managed** (has location) | **External** (has location)                  | **Managed** (no location)   | `<schema_location>/<table>/`           | Managed    | ✅ UC                              |
+| **External** (no location) | **External** (has location)                  | **Managed** (no location)   | `<schema_location>/<table>/`           | Managed    | ✅ UC                              |
+| **External** (no location) | **External** (has location)                  | **External** (has location) | `<table_location>`                     | External   | ❌ User (UC deletes only metadata) |
+
   
