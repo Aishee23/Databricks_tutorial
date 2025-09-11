@@ -129,9 +129,9 @@ They are part of Unity Catalog’s data governance model and allow you to secure
 #### Unity Catalog Storage Resolution Matrix
 | Catalog                    | Schema                                       | Table                       | Where Data Is Stored                   | Table Type | Who Deletes Data on DROP          |
 | -------------------------- | -------------------------------------------- | --------------------------- | -------------------------------------- | ---------- | --------------------------------- |
-| **Managed** (has location) | **Managed** (no location → inherits catalog) | **Managed** (no location)   | `<catalog_location>/<schema>/<table>/` | Managed    | ✅ UC                              |
-| **Managed** (has location) | **External** (has location)                  | **Managed** (no location)   | `<schema_location>/<table>/`           | Managed    | ✅ UC                              |
-| **External** (no location) | **External** (has location)                  | **Managed** (no location)   | `<schema_location>/<table>/`           | Managed    | ✅ UC                              |
-| **External** (no location) | **External** (has location)                  | **External** (has location) | `<table_location>`                     | External   | ❌ User (UC deletes only metadata) |
+| **Managed** (has location) | **Managed** (no location → inherits catalog) | **Managed** (no location)   | `<catalog_location>/<schema>/<table>/` | Managed    |  UC                              |
+| **Managed** (has location) | **External** (has location)                  | **Managed** (no location)   | `<schema_location>/<table>/`           | Managed    |  UC                              |
+| **External** (no location) | **External** (has location)                  | **Managed** (no location)   | `<schema_location>/<table>/`           | Managed    |  UC                              |
+| **External** (no location) | **External** (has location)                  | **External** (has location) | `<table_location>`                     | External   |  User (UC deletes only metadata) |
 
   
