@@ -148,4 +148,53 @@ It is a logical object inside a schema, just like a table or function.
 
         Temporary view:
         CREATE VIEW retail.sales.high_value_orders AS SELECT * FROM retail.sales.orders WHERE amount > 1000;
-                
+
+
+#### Materialized Views (Bonus)
+
+- Databricks also supports materialized views (preview/GA depends on region).
+- They store results like a table but auto-refresh when underlying data changes.
+- Gives better performance than a normal view.
+Syntax:
+
+            CREATE MATERIALIZED VIEW retail.sales.mv_high_value AS
+            SELECT * FROM retail.sales.orders WHERE amount > 1000;
+
+#### What is a Deletion Vector (DV)?
+
+A Deletion Vector (DV) is a mechanism used by Delta Lake to mark rows as deleted without physically rewriting the data files.
+Instead of rewriting Parquet files when you delete rows,Delta just marks which row positions are “deleted” using a compact bitmap called a **deletion vector.**
+So, the data still exists in the Parquet file, but is ignored during query reads.
+
+#### Why We Need Deletion Vectors
+
+**Without DVs:**
+A DELETE or UPDATE had to rewrite whole Parquet files to remove rows.
+This is slow and expensive for big tables.
+It also causes many small files → performance issues.
+
+**With DVs:**
+Only a lightweight metadata change happens → much faster.
+Actual data files remain untouched until compaction (VACUUM or OPTIMIZE). 
+
+Let’s say we have a Parquet data file with 5 rows:
+
+RowPos	Data
+0	    Alice
+1	    Bob
+2	    Carol
+3	    Dave
+4	    Eve
+
+        DELETE FROM employees WHERE name = 'Bob';
+
+Instead of rewriting the file, Delta creates a deletion vector like:
+
+File: part-0001.parquet
+DV: 0=keep, 1=delete, 2=keep, 3=keep, 4=keep
+
+**Important points about deletion vector**
+- Supported only in Delta tables.
+- Managed by Unity Catalog automatically.
+- Not visible directly to users — handled by the Delta engine internally.
+- If you copy the Parquet files directly from storage, you may still see “deleted” data, because DV info lives in the Delta log.
